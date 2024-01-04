@@ -4,12 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -52,10 +57,20 @@ fun AffirmationApp() {
 @Composable
 fun AffirmationList(affirmationList: List<Affirmation>,
                     modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
+    /*LazyColumn(modifier = modifier) {
         items(affirmationList) { affirmation ->
             AffirmationCard(affirmation = affirmation,
                 modifier = Modifier.padding(8.dp))
+        }
+    }*/
+    LazyVerticalGrid(columns = GridCells.Fixed(2), 
+        contentPadding = PaddingValues(horizontal = 16.dp,
+            vertical = 8.dp,),
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        items(affirmationList) {
+            AffirmationCard(affirmation = it,
+                modifier = modifier)
         }
     }
 }
@@ -70,12 +85,14 @@ fun AffirmationCard(affirmation: Affirmation,
                 contentDescription = stringResource(id = affirmation.stringResourceId),
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(194.dp),
+                    // .height(194.dp),
+                    .height(100.dp),
                 contentScale = ContentScale.Crop)
             Text(
                 text = LocalContext.current.getString(affirmation.stringResourceId),
                 modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 2
             )
         }
     }
@@ -85,6 +102,7 @@ fun AffirmationCard(affirmation: Affirmation,
 @Composable
 fun AffirmationPreview() {
     Build_Scrollable_ListTheme {
-        AffirmationCard(Affirmation(R.string.affirmation1, R.drawable.image1))
+        //AffirmationCard(Affirmation(R.string.affirmation1, R.drawable.image1))
+        AffirmationApp()
     }
 }
